@@ -6,12 +6,16 @@ import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
+import java.util.Queue;
+
 @Configuration
 public class JmsConfig {
     /**
      * sending message to jms as java object will be conveted as json text for payload
      * and receiving json text payload from the JMS gets converted to Java object
      * */
+
+    public final static String MESSAGE_Q = "MY_QUEUE";
 
     @Bean
     public MessageConverter messageConverter() {
