@@ -16,6 +16,7 @@ public class JmsConfig {
      * */
 
     public final static String MESSAGE_Q = "MY_QUEUE";
+    public final static String SEND_N_RECV_Q= "SEND_N_RECEIVE_QUEUE";
 
     @Bean
     public MessageConverter messageConverter() {
