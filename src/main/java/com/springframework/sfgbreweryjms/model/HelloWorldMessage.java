@@ -21,6 +21,7 @@ public class HelloWorldMessage implements Serializable {
      * */
     static final long serialVersionUID = -4012023952012489202L;
     
+    
     private UUID id;
     private String message;
 }
