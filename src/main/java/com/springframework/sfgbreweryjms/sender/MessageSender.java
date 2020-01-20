@@ -27,9 +27,7 @@ public class MessageSender {
                 .build();
 
         System.out.println("Sending message");
-
         jmsTemplate.convertAndSend(JmsConfig.MESSAGE_Q, message);
-
         System.out.println("message sent! " + message);
 
     }
