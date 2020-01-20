@@ -1,19 +1,15 @@
 package com.springframework.sfgbreweryjms.listener;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springframework.sfgbreweryjms.config.JmsConfig;
 import com.springframework.sfgbreweryjms.model.HelloWorldMessage;
 import lombok.RequiredArgsConstructor;
-import org.apache.activemq.artemis.jms.client.ActiveMQDestination;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.Headers;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import java.util.UUID;
@@ -23,6 +19,7 @@ import java.util.UUID;
 public class MessageReciever {
 
     private final JmsTemplate jmsTemplate;
+    private final ObjectMapper objectMapper;
 
 /*    @JmsListener(destination = JmsConfig.MESSAGE_Q)
     public void receiveMessage(@Payload HelloWorldMessage incomingMsg,
@@ -43,13 +40,16 @@ public class MessageReciever {
 
 
     @JmsListener(destination = JmsConfig.SEND_N_RECV_Q)
-    public void receiveAndReply(HelloWorldMessage helloWorldMessage, MessageHeaders messageHeaders, Message msg) throws JMSException {
+    public void receiveAndReply(HelloWorldMessage helloWorldMessage, MessageHeaders messageHeaders, Message msg) throws JMSException, JsonProcessingException {
         System.out.println("Received * Incoming * Message");
-        System.out.println(msg.getBody(String.class));
+        HelloWorldMessage payLoad = objectMapper.readValue(msg.getBody(String.class), HelloWorldMessage.class);
+        System.out.println("ID: " + payLoad.getId());
+        System.out.println("MSG: " + payLoad.getMessage());
+
         
         HelloWorldMessage msgPayload = HelloWorldMessage.builder()
                 .id(UUID.randomUUID())
-                .message("!!! WORLD!!! ")
+                .message("!!!<<< WORLD >>> !!! ")
                 .build();
 
         System.out.println("REPLYING TO: " + msgPayload);
